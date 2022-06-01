@@ -24,6 +24,27 @@ class GameScene: SKScene {
     var upgrade1cost = 100
     var upgrade2cost = 15
 
+    func restoreUserData() {
+        let defaults = UserDefaults.standard
+        if defaults.array(forKey: "previousSave") != nil {
+            let savedVariables = defaults.array(forKey: "previousSave") as! Array<Int>
+            touchpoints = savedVariables[0]
+            autopoints = savedVariables[1]
+            upgrade1cost = savedVariables[2]
+            upgrade2cost = savedVariables[3]
+            let savedScore = savedVariables[4]
+            
+            print(savedVariables)
+            
+            scoreLB?.attributedText = NSAttributedString(string: String(savedScore), attributes: [NSAttributedString.Key.font: UIFont(name:"HelveticaNeue-Bold", size: 100.0) as Any, NSAttributedString.Key.foregroundColor: UIColor.white])
+            
+            tapcostLB?.attributedText = NSAttributedString(string: String(upgrade1cost), attributes: [NSAttributedString.Key.font: UIFont(name:"HelveticaNeue-Bold", size: 32.0) as Any, NSAttributedString.Key.foregroundColor: UIColor.white])
+            
+            autocostLB?.attributedText = NSAttributedString(string: String(upgrade2cost), attributes: [NSAttributedString.Key.font: UIFont(name:"HelveticaNeue-Bold", size: 32.0) as Any, NSAttributedString.Key.foregroundColor: UIColor.white])
+            
+        }
+        
+    }
     
     override func didMove(to view: SKView) {
         
@@ -37,10 +58,13 @@ class GameScene: SKScene {
         tapcostLB = self.childNode(withName: "tapcostLB") as? SKLabelNode
         autocostLB = self.childNode(withName: "autocostLB") as? SKLabelNode
         
+        restoreUserData()
+        
+        let defaults = UserDefaults.standard
         
         let timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [self] timer in
             scoreLB?.attributedText = NSAttributedString(string: String(Int((scoreLB?.attributedText?.string)!)! + autopoints), attributes: [NSAttributedString.Key.font: UIFont(name:"HelveticaNeue-Bold", size: 100.0) as Any, NSAttributedString.Key.foregroundColor: UIColor.white])
-            
+            defaults.set([touchpoints, autopoints, upgrade1cost, upgrade2cost, Int((scoreLB?.attributedText?.string)!)!], forKey:"previousSave")
         }
         
     }
