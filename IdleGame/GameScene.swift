@@ -22,7 +22,7 @@ class GameScene: SKScene {
     var touchpoints = 1
     var autopoints = 0
     var upgrade1cost = 100
-    var upgrade2cost = 100
+    var upgrade2cost = 15
 
     
     override func didMove(to view: SKView) {
@@ -55,9 +55,9 @@ class GameScene: SKScene {
             
             if((upgrade1?.contains(location)) == true) {
                 if(Int((scoreLB?.attributedText?.string)!)! >= upgrade1cost) {
-                    touchpoints += 1
+                    touchpoints *= 2
                     scoreLB?.attributedText = NSAttributedString(string: String(Int((scoreLB?.attributedText?.string)!)! - upgrade1cost), attributes: [NSAttributedString.Key.font: UIFont(name:"HelveticaNeue-Bold", size: 100.0) as Any, NSAttributedString.Key.foregroundColor: UIColor.white])
-                    upgrade1cost = Int(Float(upgrade1cost) * 2)
+                    upgrade1cost = Int(Float(upgrade1cost) * 2.5)
                     tapcostLB?.attributedText = NSAttributedString(string: String(upgrade1cost), attributes: [NSAttributedString.Key.font: UIFont(name:"HelveticaNeue-Bold", size: 32.0) as Any, NSAttributedString.Key.foregroundColor: UIColor.white])
                 }
             }
@@ -65,10 +65,10 @@ class GameScene: SKScene {
             if((upgrade2?.contains(location)) == true) {
                 if(Int((scoreLB?.attributedText?.string)!)! >= upgrade2cost) {
                     autopoints += 1
-                    let moveAction = SKAction.move(to: CGPoint(x: Int.random(in: -), y: 50), duration: 2.0)
+//                    let moveAction = SKAction.move(to: CGPoint(x: Int.random(in: -), y: 50), duration: 2.0)
                     
                     scoreLB?.attributedText = NSAttributedString(string: String(Int((scoreLB?.attributedText?.string)!)! - upgrade2cost), attributes: [NSAttributedString.Key.font: UIFont(name:"HelveticaNeue-Bold", size: 100.0) as Any, NSAttributedString.Key.foregroundColor: UIColor.white])
-                    upgrade2cost = Int(Float(upgrade2cost) * 1.1)
+                    upgrade2cost = Int(Float(upgrade2cost) + 5)
                     autocostLB?.attributedText = NSAttributedString(string: String(upgrade2cost), attributes: [NSAttributedString.Key.font: UIFont(name:"HelveticaNeue-Bold", size: 32.0) as Any, NSAttributedString.Key.foregroundColor: UIColor.white])
                     
                     
@@ -83,3 +83,4 @@ class GameScene: SKScene {
         }
     
 }
+
